@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 10
+
+typedef struct {
+    int acc_no;
+    char name[50];
+    float balance;
+} Account;
+
+Account accounts[MAX];
+int count = 0;
+
+// Add new account
+void addAccount() {
+    if (count < MAX) {
+        printf("Enter Account Number: ");
+        scanf("%d", &accounts[count].acc_no);
+
+        printf("Enter Name: ");
+        scanf("%s", accounts[count].name);
+
+        printf("Enter Initial Balance: ");
+        scanf("%f", &accounts[count].balance);
+
+        count++;
+        printf("Account added successfully!\n");
+    } else {
+        printf("Cannot add more accounts.\n");
+    }
+}
+
+// Display all accounts
+void displayAccounts() {
+    printf("Bank Accounts:\n");
+    for (int i = 0; i < count; i++) {
+        printf("Acc No: %d, Name: %s, Balance: %.2f\n", accounts[i].acc_no, accounts[i].name, accounts[i].balance);
+    }
+}
+
+// Deposit money
+void deposit() {
+    int acc, found = 0;
+    float amt;
+
+    printf("Enter Account Number: ");
+    scanf("%d", &acc);
+
+    for (int i = 0; i < count; i++) {
+        if (accounts[i].acc_no == acc) {
+            printf("Enter amount to deposit: ");
+            scanf("%f", &amt);
+            accounts[i].balance += amt;
+            printf("Deposited successfully! New Balance: %.2f\n", accounts[i].balance);
+            found = 1;
+            break;
+        }
+    }
+    if (!found) printf("Account not found.\n");
+}
+
+// Withdraw money
+void withdraw() {
+    int acc, found = 0;
+    float amt;
+
+    printf("Enter Account Number: ");
+    scanf("%d", &acc);
+
+    for (int i = 0; i < count; i++) {
+        if (accounts[i].acc_no == acc) {
+            printf("Enter amount to withdraw: ");
+            scanf("%f", &amt);
+            if (accounts[i].balance >= amt) {
+                accounts[i].balance -= amt;
+                printf("Withdrawal successful! New Balance: %.2f\n", accounts[i].balance);
+            } else {
+                printf("Insufficient balance.\n");
+            }
+            found = 1;
+            break;
+        }
+    }
+    if (!found) printf("Account not found.\n");
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\nBanking System Menu:\n");
+        printf("1. Add Account\n2. Display Accounts\n3. Deposit\n4. Withdraw\n0. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: addAccount(); break;
+            case 2: displayAccounts(); break;
+            case 3: deposit(); break;
+            case 4: withdraw(); break;
+            case 0: printf("Thank you!\n"); break;
+            default: printf("Invalid option.\n"); break;
+        }
+    } while (choice != 0);
+    return 0;
+}
